@@ -1,12 +1,17 @@
 package com.kava.android.edgecoloringmobileapp;
 
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.print.PrintHelper;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import com.kava.android.edgecoloringmobileapp.Fragment.HomeFragment;
 import com.kava.android.imageprocessing.ImageProcessing;
@@ -51,6 +57,24 @@ public class MainActivity extends AppCompatActivity {
         // Setup drawer view
         setupDrawerContent(nvDrawer);
     }
+
+//    private void startPrint(){
+//        Intent printIntent = new Intent(getApplicationContext(), PrintDialogActivity.class);
+//        printIntent.setDataAndType("", "");
+//        printIntent.putExtra("title", "");
+//        startActivity(printIntent);
+//        ImageProcessing proc = new ImageProcessing();
+//        String file = proc.loadImage("/sdcard/Images/");
+//        doPhotoPrint(file);
+//    }
+
+//    private void doPhotoPrint(String file) {
+//        PrintHelper photoPrinter = new PrintHelper(getApplicationContext());
+//        photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+//        Bitmap bitmap = BitmapFactory.decodeFile(file);
+//        photoPrinter.printBitmap("droids.jpg - test print", bitmap);
+//    }
+
 
     private ActionBarDrawerToggle setupDrawerToggle() {
         return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
@@ -133,9 +157,9 @@ public class MainActivity extends AppCompatActivity {
         public void onManagerConnected(int status) {
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS: {
-                    Log.i("OpenCv", "OpenCV loaded successfully");
-                    ImageProcessing proc = new ImageProcessing();
-                    proc.loadImage("/sdcard/Images/");
+//                    Log.i("OpenCv", "OpenCV loaded successfully");
+//                    ImageProcessing proc = new ImageProcessing();
+//                    proc.loadImage("/sdcard/Images/");
                     //m=new Mat();
                 }
                 break;

@@ -148,7 +148,7 @@ public class ImageProcessing {
         return contours;
     }
 
-    public void loadImage(String imagePath)
+    public String loadImage(String imagePath)
     {
 //        File imgFile = new File("/sdcard/Images/test_image.jpg");
 //
@@ -184,6 +184,8 @@ public class ImageProcessing {
 
         Imgcodecs.imwrite(cannyFilename, imageMat);
 
+        return cannyFilename;
     }
+
 }
 
