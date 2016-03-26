@@ -1,35 +1,24 @@
-package com.kava.android.edgecoloringmobileapp;
+package com.kava.android.edgecoloringmobileapp.ui;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.print.PrintHelper;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 
-import com.kava.android.edgecoloringmobileapp.Fragment.HomeFragment;
-import com.kava.android.imageprocessing.ImageProcessing;
+import com.kava.android.edgecoloringmobileapp.R;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-import org.opencv.core.Mat;
 
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
@@ -56,24 +45,15 @@ public class MainActivity extends AppCompatActivity {
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
         // Setup drawer view
         setupDrawerContent(nvDrawer);
+
     }
 
-//    private void startPrint(){
-//        Intent printIntent = new Intent(getApplicationContext(), PrintDialogActivity.class);
-//        printIntent.setDataAndType("", "");
-//        printIntent.putExtra("title", "");
-//        startActivity(printIntent);
-//        ImageProcessing proc = new ImageProcessing();
-//        String file = proc.loadImage("/sdcard/Images/");
-//        doPhotoPrint(file);
-//    }
-
-//    private void doPhotoPrint(String file) {
-//        PrintHelper photoPrinter = new PrintHelper(getApplicationContext());
-//        photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
-//        Bitmap bitmap = BitmapFactory.decodeFile(file);
-//        photoPrinter.printBitmap("droids.jpg - test print", bitmap);
-//    }
+    private void doPhotoPrint(String file) {
+        Intent printIntent = new Intent(this, PrintDialogActivity.class);
+        printIntent.setDataAndType(Uri.parse("file:///sdcard/Images/ffLapl2.png"), "image/png");
+        printIntent.putExtra("title", "Title");
+        startActivity(printIntent);
+   }
 
 
     private ActionBarDrawerToggle setupDrawerToggle() {

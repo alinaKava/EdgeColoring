@@ -1,4 +1,4 @@
-package com.kava.android.edgecoloringmobileapp;
+package com.kava.android.edgecoloringmobileapp.ui;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -9,6 +9,8 @@ import android.util.Base64;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.kava.android.edgecoloringmobileapp.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;

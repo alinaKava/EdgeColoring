@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.MainActivity">
+    <item
+        android:id="@+id/action_location_found"
+        android:icon="@drawable/ic_one"
+        app:showAsAction="ifRoom"
+        android:title="ction_location_found"/>
+    <item
+        android:id="@+id/menu_overflow"
+        android:icon="@drawable/ic_two"
+        app:showAsAction="ifRoom"
+        android:title="ction_location_found" />
+</menu>
