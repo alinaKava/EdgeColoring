@@ -7,4 +7,7 @@
     <string name="print_nav_item">Print queue</string>
     <string name="settings_nav_item">Settings</string>
     <string name="header">CMammy</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
