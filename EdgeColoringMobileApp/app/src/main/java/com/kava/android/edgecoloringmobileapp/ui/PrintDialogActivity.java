@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Base64;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -67,14 +68,17 @@ public class PrintDialogActivity extends Activity {
     }
 
     final class PrintDialogJavaScriptInterface {
+        @JavascriptInterface
         public String getType() {
             return cloudPrintIntent.getType();
         }
 
+        @JavascriptInterface
         public String getTitle() {
             return cloudPrintIntent.getExtras().getString("title");
         }
 
+        @JavascriptInterface
         public String getContent() {
             try {
                 ContentResolver contentResolver = getContentResolver();
@@ -99,10 +103,12 @@ public class PrintDialogActivity extends Activity {
             return "";
         }
 
+        @JavascriptInterface
         public String getEncoding() {
             return CONTENT_TRANSFER_ENCODING;
         }
 
+        @JavascriptInterface
         public void onPostMessage(String message) {
             if (message.startsWith(CLOSE_POST_MESSAGE_NAME)) {
                 finish();

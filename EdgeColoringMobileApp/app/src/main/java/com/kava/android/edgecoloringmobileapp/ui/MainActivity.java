@@ -1,9 +1,9 @@
 package com.kava.android.edgecoloringmobileapp.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -11,12 +11,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.kava.android.edgecoloringmobileapp.R;
+import com.kava.android.edgecoloringmobileapp.utils.ActivityLifecycleHelper;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.LoaderCallbackInterface;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView nvDrawer;
     private Toolbar toolbar;
     ActionBarDrawerToggle drawerToggle;
+    private ActivityLifecycleHelper lifecycleHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +52,52 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle = setupDrawerToggle();
 
         // Tie DrawerLayout events to the ActionBarToggle
-        mDrawer.setDrawerListener(drawerToggle);
+        mDrawer.addDrawerListener(drawerToggle);
 
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
         // Setup drawer view
         setupDrawerContent(nvDrawer);
         addDefaultColorities();
 
-        if (savedInstanceState != null) {
-            nvDrawer.setCheckedItem(R.id.nav_first_fragment);
+        lifecycleHelper = new ActivityLifecycleHelper(this);
+        lifecycleHelper.onCreate(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            nvDrawer.setCheckedItem(R.id.nav_second_fragment);
+            openFragment(new ImageGridFragment(), null);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        lifecycleHelper.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        lifecycleHelper.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        lifecycleHelper.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    public void onImagePicked(String selectedImagePath) {
+        startImageWorkActivity(selectedImagePath);
+    }
+
+    public void onImagePickedTaken(String selectedImagePath) {
+        startImageWorkActivity(selectedImagePath);
+    }
+
+    private void startImageWorkActivity(String path) {
+        Intent intent = new Intent(this, ImageWorkActivity.class);
+        intent.putExtra("imagePath", path);
+        startActivity(intent);
     }
 
     private void addDefaultColorities() {
@@ -72,6 +112,15 @@ public class MainActivity extends AppCompatActivity {
                     copyAssetFolder(getAssets(), "files", dir.getAbsolutePath());
                 }
             });
+
+        }
+    }
+
+    private void createUserFolder(){
+        final File dir = new File(getFilesDir(), "user");
+        if (!dir.exists()) {
+            dir.mkdir();
+
 
         }
     }
@@ -128,14 +177,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void doPhotoPrint(String file) {
-        Intent printIntent = new Intent(this, PrintDialogActivity.class);
-        printIntent.setDataAndType(Uri.parse("file:///sdcard/Images/ffLapl2.png"), "image/png");
-        printIntent.putExtra("title", "Title");
-        startActivity(printIntent);
-    }
-
-
     private ActionBarDrawerToggle setupDrawerToggle() {
         return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
     }
@@ -151,33 +192,54 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    private void createDialog() {
+        final CharSequence[] options = {"Take photo", "Colority", "Choose from gallery"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Make new");
+        builder.setItems(options, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    lifecycleHelper.startImageTaking();
+                } else if (which == 1) {
+                    lifecycleHelper.startImagePicking();
+                } else if (which == 2) {
+                    lifecycleHelper.startImagePicking();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        builder.create().show();
+    }
+
     public void selectDrawerItem(MenuItem menuItem) {
 
         switch (menuItem.getItemId()) {
             case R.id.nav_first_fragment:
-                openFragment(new HomeFragment());
+                createDialog();
                 break;
             case R.id.nav_second_fragment:
-                openFragment(new ImageGridFragment());
+                openFragment(new ImageGridFragment(), menuItem);
                 break;
             case R.id.nav_third_fragment:
-                openFragment(new HomeFragment());
+                openFragment(new HomeFragment(), menuItem);
                 break;
             default:
-                openFragment(new HomeFragment());
+                openFragment(new HomeFragment(), menuItem);
         }
 
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
-        // Close the navigation drawer
         mDrawer.closeDrawers();
     }
 
-    private void openFragment(Fragment fragment) {
+    private void openFragment(Fragment fragment, MenuItem menuItem) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+
+        if (menuItem != null) {
+            menuItem.setChecked(true);
+            setTitle(menuItem.getTitle());
+        }
+
     }
 
     @Override
@@ -203,16 +265,12 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
-
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
         public void onManagerConnected(int status) {
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS: {
-//                    Log.i("OpenCv", "OpenCV loaded successfully");
-//                    ImageProcessing proc = new ImageProcessing();
-//                    proc.loadImage("/sdcard/Images/");
-                    //m=new Mat();
+                    Log.i("OpenCv", "OpenCV loaded successfully");
                 }
                 break;
                 default: {
@@ -227,8 +285,6 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_1_0, this, mLoaderCallback);
-
-
     }
 
     @Override

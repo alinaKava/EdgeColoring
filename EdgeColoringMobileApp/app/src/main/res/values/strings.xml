@@ -6,6 +6,9 @@
     <string name="colorings_nav_item">Colorings</string>
     <string name="print_nav_item">Print queue</string>
     <string name="settings_nav_item">Settings</string>
+    <string name="camera_item">From camera</string>
+    <string name="image_item">Image</string>
+    <string name="colority_item">Colority</string>
     <string name="header">CMammy</string>
 
     <!-- TODO: Remove or change this placeholder text -->

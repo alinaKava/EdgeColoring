@@ -3,9 +3,7 @@ package com.kava.android.edgecoloringmobileapp.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +12,11 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.kava.android.edgecoloringmobileapp.R;
 
 import java.io.File;
-import java.util.IllegalFormatCodePointException;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,16 +37,16 @@ public class ImageGridFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //startImagePagerActivity(position);
+                startImagePagerActivity(position);
             }
         });
         return rootView;
     }
 
     protected void startImagePagerActivity(int position) {
-//        Intent intent = new Intent(getActivity(), ImageDetailActivity.class);
-//        intent.putExtra("imagePosition", position);
-//        startActivity(intent);
+        Intent intent = new Intent(getActivity(), ImageDetailsActivity.class);
+        intent.putExtra("imagePosition", position);
+        startActivity(intent);
     }
 
     private File[] getColorities(){

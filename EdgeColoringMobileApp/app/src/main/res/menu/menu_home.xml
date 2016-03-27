@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.MainActivity">
     <item
-        android:id="@+id/action_location_found"
-        android:icon="@drawable/ic_one"
+        android:id="@+id/menu_save"
+        android:icon="@drawable/ic_save_white_24dp"
         app:showAsAction="ifRoom"
-        android:title="ction_location_found"/>
+        android:title="Save"/>m"
+        android:title="Print" />
     <item
-        android:id="@+id/menu_overflow"
-        android:icon="@drawable/ic_two"
+        android:id="@+id/menu_edit"
+        android:icon="@drawable/ic_mode_edit_white_24dp"
         app:showAsAction="ifRoom"
-        android:title="ction_location_found" />
+        android:title="Print" />
 </menu>
