@@ -55,7 +55,7 @@ public class ImageGridFragment extends Fragment {
         return files;
     }
 
-    private static class ImageAdapter extends BaseAdapter {
+    public static class ImageAdapter extends BaseAdapter {
 
         private LayoutInflater inflater;
         private File[] files;

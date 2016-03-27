@@ -1,11 +1,8 @@
 package com.kava.android.edgecoloringmobileapp.ui;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,6 +14,7 @@ import android.widget.Toast;
 
 import com.kava.android.edgecoloringmobileapp.R;
 import com.kava.android.edgecoloringmobileapp.utils.ActivityLifecycleHelper;
+import com.kava.android.edgecoloringmobileapp.utils.PrintQueueHelper;
 import com.kava.android.imageprocessing.ImageProcessing;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -83,37 +81,21 @@ public class ImageWorkActivity extends AppCompatActivity {
     }
 
     private void doPhotoPrint() {
-        Uri fileUri;
-        String fileTitle = "";
+        File file;
+        String fileTitle = null;
         if (!isSaved) {
             final File dir = new File(getFilesDir(), "temp");
             if (!dir.exists()) {
                 dir.mkdir();
-
             }
-
-            File file = new File(dir, "temp.jpg");
-            fileTitle =  "Colority_" + System.currentTimeMillis();
+            file = new File(dir, "temp.jpg");
             saveColority(file);
-            fileUri = getUri(file);
-
         } else {
-            File file = new File(colorityPath);
-            fileUri = getUri(file);
+            file = new File(colorityPath);
             fileTitle = file.getName();
         }
-        Intent printIntent = new Intent(this, PrintDialogActivity.class);
-        printIntent.setDataAndType(fileUri, "image/jpeg");
-        printIntent.putExtra("title", fileTitle);
-        startActivity(printIntent);
-    }
 
-    private Uri getUri(File file) {
-        Uri fileUri = FileProvider.getUriForFile(
-                this,
-                "com.kava.android.edgecoloringmobileapp.fileprovider",
-                file);
-        return fileUri;
+        PrintQueueHelper.print(this, file.getAbsolutePath(), fileTitle);
     }
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
