@@ -10,7 +10,4 @@
     <string name="image_item">Image</string>
     <string name="colority_item">Colority</string>
     <string name="header">CMammy</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

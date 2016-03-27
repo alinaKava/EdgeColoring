@@ -32,6 +32,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity {
+
     private DrawerLayout mDrawer;
     private NavigationView nvDrawer;
     private Toolbar toolbar;
@@ -116,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void createUserFolder(){
+    private void createUserFolder() {
         final File dir = new File(getFilesDir(), "user");
         if (!dir.exists()) {
             dir.mkdir();
@@ -222,7 +223,10 @@ public class MainActivity extends AppCompatActivity {
                 openFragment(new ImageGridFragment(), menuItem);
                 break;
             case R.id.nav_third_fragment:
-                openFragment(new HomeFragment(), menuItem);
+                openFragment(new PrintQueueFragment(), menuItem);
+                break;
+            case R.id.drawer_item_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
             default:
                 openFragment(new HomeFragment(), menuItem);
