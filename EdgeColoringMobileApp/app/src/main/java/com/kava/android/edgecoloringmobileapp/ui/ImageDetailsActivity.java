@@ -33,8 +33,10 @@ public class ImageDetailsActivity extends AppCompatActivity {
 
 
         int imagePosition = getIntent().getIntExtra("imagePosition", -1);
+        String folderColorings = getIntent().getStringExtra("folderColorings");
+
         if (imagePosition >= 0) {
-            imagePath = loadImage(imagePosition);
+            imagePath = loadImage(imagePosition, folderColorings);
         }
 
         FloatingActionButton myFab = (FloatingActionButton)  findViewById(R.id.fab);
@@ -49,8 +51,8 @@ public class ImageDetailsActivity extends AppCompatActivity {
         PrintQueueHelper.print(this, file, null);
     }
 
-    private String loadImage(int imagePosition) {
-        File dir = new File(getFilesDir(), "defaults");
+    private String loadImage(int imagePosition, String folderColorings) {
+        File dir = new File(getFilesDir(), folderColorings);
         File[] files = dir.listFiles();
         imageView = (ImageView) findViewById(R.id.image);
         Glide

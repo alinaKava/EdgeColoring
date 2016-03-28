@@ -24,6 +24,7 @@ import java.io.File;
  */
 public class ImageGridFragment extends Fragment {
 
+    private String folderColorings = "";
     private GridView mListView;
 
     public ImageGridFragment() {
@@ -38,6 +39,9 @@ public class ImageGridFragment extends Fragment {
         mListView = (GridView) rootView.findViewById(R.id.gridView);
         FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.fabCreate);
         myFab.setVisibility(View.GONE);
+        
+        folderColorings = getArguments().getString("folder");
+        
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -58,6 +62,7 @@ public class ImageGridFragment extends Fragment {
     protected void startImagePagerActivity(int position) {
         Intent intent = new Intent(getActivity(), ImageDetailsActivity.class);
         intent.putExtra("imagePosition", position);
+        intent.putExtra("folderColorings", folderColorings);
         startActivity(intent);
     }
 
