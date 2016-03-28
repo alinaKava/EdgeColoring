@@ -55,8 +55,7 @@ public class ImageGridFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        String folder = getArguments().getString("folder");
-        mListView.setAdapter(new ImageAdapter(getActivity(), getColorities(folder)));
+        mListView.setAdapter(new ImageAdapter(getActivity(), getColorities(folderColorings)));
     }
 
     protected void startImagePagerActivity(int position) {
