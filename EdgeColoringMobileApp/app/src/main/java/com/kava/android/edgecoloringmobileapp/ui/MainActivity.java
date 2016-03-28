@@ -59,13 +59,14 @@ public class MainActivity extends AppCompatActivity {
         // Setup drawer view
         setupDrawerContent(nvDrawer);
         addDefaultColorities();
+        createUserFolder();
 
         lifecycleHelper = new ActivityLifecycleHelper(this);
         lifecycleHelper.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
-            nvDrawer.setCheckedItem(R.id.nav_second_fragment);
-            openFragment(new ImageGridFragment(), null);
+            nvDrawer.setCheckedItem(R.id.nav_first_fragment);
+            openFragment(new HomeFragment(), null);
         }
     }
 
@@ -220,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
                 createDialog();
                 break;
             case R.id.nav_second_fragment:
-                openFragment(new ImageGridFragment(), menuItem);
+                openFragment(new HomeFragment(), menuItem);
                 break;
             case R.id.nav_third_fragment:
                 openFragment(new PrintQueueFragment(), menuItem);
