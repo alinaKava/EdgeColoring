@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.kava.android.edgecoloringmobileapp.R;
@@ -69,6 +70,10 @@ public class ImageDetailsActivity extends AppCompatActivity {
         if (id == android.R.id.home) {
             onBackPressed();
             return true;
+        }
+        else if (id == R.id.menu_edit)
+        {
+            Toast.makeText(this, "Sorry, you're using the free version", Toast.LENGTH_LONG).show();
         }
 
         return super.onOptionsItemSelected(item);

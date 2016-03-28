@@ -82,20 +82,14 @@ public class ImageWorkActivity extends AppCompatActivity {
 
     private void doPhotoPrint() {
         File file;
-        String fileTitle = null;
         if (!isSaved) {
-            final File dir = new File(getFilesDir(), "temp");
-            if (!dir.exists()) {
-                dir.mkdir();
-            }
-            file = new File(dir, "temp.jpg");
+            file = new File(getFilesDir() + "/user", "Colority_" + System.currentTimeMillis() + ".jpg");
             saveColority(file);
         } else {
             file = new File(colorityPath);
-            fileTitle = file.getName();
         }
 
-        PrintQueueHelper.print(this, file.getAbsolutePath(), fileTitle);
+        PrintQueueHelper.print(this, file.getAbsolutePath(), file.getName());
     }
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
@@ -139,6 +133,10 @@ public class ImageWorkActivity extends AppCompatActivity {
             Toast.makeText(this, "Colority has been saved", Toast.LENGTH_LONG).show();
             isSaved = true;
             invalidateOptionsMenu();
+        }
+        else if (id == R.id.menu_edit)
+        {
+            Toast.makeText(this, "Sorry, you're using the free version", Toast.LENGTH_LONG).show();
         }
 
         return super.onOptionsItemSelected(item);
