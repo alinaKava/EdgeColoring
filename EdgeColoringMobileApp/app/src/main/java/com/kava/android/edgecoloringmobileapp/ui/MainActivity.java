@@ -65,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
         lifecycleHelper.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
-            nvDrawer.setCheckedItem(R.id.nav_first_fragment);
+            nvDrawer.setCheckedItem(R.id.nav_second_fragment);
             openFragment(new HomeFragment(), null);
+            setTitle(R.string.colorings_nav_item);
         }
     }
 
@@ -217,9 +218,6 @@ public class MainActivity extends AppCompatActivity {
     public void selectDrawerItem(MenuItem menuItem) {
 
         switch (menuItem.getItemId()) {
-            case R.id.nav_first_fragment:
-                createDialog();
-                break;
             case R.id.nav_second_fragment:
                 openFragment(new HomeFragment(), menuItem);
                 break;
