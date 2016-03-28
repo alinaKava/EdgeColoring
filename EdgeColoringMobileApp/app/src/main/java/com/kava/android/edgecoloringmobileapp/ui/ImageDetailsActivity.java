@@ -32,7 +32,6 @@ public class ImageDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
 
-
         int imagePosition = getIntent().getIntExtra("imagePosition", -1);
         String folderColorings = getIntent().getStringExtra("folderColorings");
 
@@ -40,7 +39,7 @@ public class ImageDetailsActivity extends AppCompatActivity {
             imagePath = loadImage(imagePosition, folderColorings);
         }
 
-        FloatingActionButton myFab = (FloatingActionButton)  findViewById(R.id.fab);
+        FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 doPhotoPrint(imagePath);
@@ -49,7 +48,9 @@ public class ImageDetailsActivity extends AppCompatActivity {
     }
 
     private void doPhotoPrint(String file) {
-        PrintQueueHelper.print(this, file, null);
+        if (!PrintQueueHelper.print(this, file, null))
+            Toast.makeText(this, "No internet connection, coloring has been added to print queue", Toast.LENGTH_LONG).show();
+
     }
 
     private String loadImage(int imagePosition, String folderColorings) {
@@ -70,9 +71,7 @@ public class ImageDetailsActivity extends AppCompatActivity {
         if (id == android.R.id.home) {
             onBackPressed();
             return true;
-        }
-        else if (id == R.id.menu_edit)
-        {
+        } else if (id == R.id.menu_edit) {
             Toast.makeText(this, "Sorry, you're using the free version", Toast.LENGTH_LONG).show();
         }
 

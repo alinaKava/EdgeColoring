@@ -25,8 +25,9 @@ public class PrintQueueHelper {
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-    public static void print(Context context, String path, String title) {
-        if (isNetworkConnected(context)) {
+    public static boolean print(Context context, String path, String title) {
+        boolean result = isNetworkConnected(context);
+        if (result) {
 
             if (title == null) {
                 title = "Colority_" + System.currentTimeMillis();
@@ -42,9 +43,12 @@ public class PrintQueueHelper {
             printIntent.setDataAndType(fileUri, "image/jpeg");
             printIntent.putExtra("title", title);
             context.startActivity(printIntent);
+
         } else {
             addJobToQueue(context, path);
         }
+
+        return result;
     }
 
     private static void addJobToQueue(Context context, String colorityPath) {

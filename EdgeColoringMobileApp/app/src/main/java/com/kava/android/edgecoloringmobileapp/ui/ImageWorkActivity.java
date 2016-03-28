@@ -99,7 +99,8 @@ public class ImageWorkActivity extends AppCompatActivity {
             file = new File(colorityPath);
         }
 
-        PrintQueueHelper.print(this, file.getAbsolutePath(), file.getName());
+        if (!PrintQueueHelper.print(this, file.getAbsolutePath(), file.getName()))
+            Toast.makeText(this, "No internet connection, coloring has been added to print queue", Toast.LENGTH_LONG).show();
     }
 
     private BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
