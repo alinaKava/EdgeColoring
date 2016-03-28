@@ -24,6 +24,8 @@ import java.io.File;
  */
 public class ImageGridFragment extends Fragment {
 
+    private GridView mListView;
+
     public ImageGridFragment() {
         // Required empty public constructor
     }
@@ -33,14 +35,10 @@ public class ImageGridFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.image_grid_view, container, false);
         View view = inflater.inflate(R.layout.home_view, container, false);
-        GridView listView = (GridView) rootView.findViewById(R.id.gridView);
+        mListView = (GridView) rootView.findViewById(R.id.gridView);
         FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.fabCreate);
         myFab.setVisibility(View.GONE);
-
-        String folder = getArguments().getString("folder");
-
-        ((GridView) listView).setAdapter(new ImageAdapter(getActivity(), getColorities(folder)));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 startImagePagerActivity(position);
@@ -48,6 +46,13 @@ public class ImageGridFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String folder = getArguments().getString("folder");
+        mListView.setAdapter(new ImageAdapter(getActivity(), getColorities(folder)));
     }
 
     protected void startImagePagerActivity(int position) {
