@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void createDialog() {
+    public void createDialog() {
         final CharSequence[] options = {"Take photo", "Colority", "Choose from gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Make new");
