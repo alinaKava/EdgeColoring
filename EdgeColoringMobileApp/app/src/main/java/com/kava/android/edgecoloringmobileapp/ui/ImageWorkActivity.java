@@ -88,18 +88,20 @@ public class ImageWorkActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        isSaved = true;
+        invalidateOptionsMenu();
     }
 
     private void doPhotoPrint() {
         File file;
-        if (!isSaved) {
+        if (!isSaved || colorityPath == null) {
             file = new File(getFilesDir() + "/user", "Colority_" + System.currentTimeMillis() + ".jpg");
             saveColority(file);
         } else {
             file = new File(colorityPath);
         }
 
-        if (!PrintQueueHelper.print(this, file.getAbsolutePath(), file.getName()))
+        if (!PrintQueueHelper.print(this, file.getAbsolutePath(), file.getName(), false))
             Toast.makeText(this, "No internet connection, coloring has been added to print queue", Toast.LENGTH_LONG).show();
     }
 
@@ -142,8 +144,7 @@ public class ImageWorkActivity extends AppCompatActivity {
             File file = new File(getFilesDir() + "/user", "Colority_" + System.currentTimeMillis() + ".jpg");
             saveColority(file);
             Toast.makeText(this, "Colority has been saved", Toast.LENGTH_LONG).show();
-            isSaved = true;
-            invalidateOptionsMenu();
+
         }
         else if (id == R.id.menu_edit)
         {

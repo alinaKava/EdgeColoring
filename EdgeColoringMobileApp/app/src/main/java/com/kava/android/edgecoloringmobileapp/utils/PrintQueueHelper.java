@@ -25,7 +25,7 @@ public class PrintQueueHelper {
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-    public static boolean print(Context context, String path, String title) {
+    public static boolean print(Context context, String path, String title, Boolean fromQueue) {
         boolean result = isNetworkConnected(context);
         if (result) {
 
@@ -34,6 +34,7 @@ public class PrintQueueHelper {
             }
 
             File requestFile = new File(path);
+
             Uri fileUri = FileProvider.getUriForFile(
                     context,
                     "com.kava.android.edgecoloringmobileapp.fileprovider",
@@ -44,7 +45,7 @@ public class PrintQueueHelper {
             printIntent.putExtra("title", title);
             context.startActivity(printIntent);
 
-        } else {
+        } else if (!fromQueue){
             addJobToQueue(context, path);
         }
 

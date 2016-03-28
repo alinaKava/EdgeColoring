@@ -47,8 +47,9 @@ public class ImageDetailsActivity extends AppCompatActivity {
         });
     }
 
-    private void doPhotoPrint(String file) {
-        if (!PrintQueueHelper.print(this, file, null))
+    private void doPhotoPrint(String filePath) {
+        File file = new File(filePath);
+        if (!PrintQueueHelper.print(this, file.getAbsolutePath(), file.getName(), false))
             Toast.makeText(this, "No internet connection, coloring has been added to print queue", Toast.LENGTH_LONG).show();
 
     }

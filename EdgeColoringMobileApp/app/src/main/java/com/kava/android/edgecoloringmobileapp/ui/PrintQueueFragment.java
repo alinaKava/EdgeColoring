@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.kava.android.edgecoloringmobileapp.R;
 import com.kava.android.edgecoloringmobileapp.utils.PrintQueueHelper;
@@ -90,7 +91,10 @@ public class PrintQueueFragment extends Fragment {
     private void print(int position) {
         Set<String> queue = PrintQueueHelper.getQueue(getActivity());
         File colority = mColorities[position];
-        // TODO print
+        if (!PrintQueueHelper.print(getContext(), colority.getAbsolutePath(), null, true))
+            Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_LONG).show();
+        else
+            delete(position);
     }
 
 }
