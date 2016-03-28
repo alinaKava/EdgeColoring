@@ -28,6 +28,7 @@ import java.io.File;
 public class ImageGridFragment extends Fragment {
 
     private ActivityLifecycleHelper lifecycleHelper;
+    private String folderColorings = "";
 
     public ImageGridFragment() {
         // Required empty public constructor
@@ -46,9 +47,9 @@ public class ImageGridFragment extends Fragment {
             }
         });
 
-        String folder = getArguments().getString("folder");
+        folderColorings = getArguments().getString("folder");
 
-        ((GridView) listView).setAdapter(new ImageAdapter(getActivity(), getColorities(folder)));
+        ((GridView) listView).setAdapter(new ImageAdapter(getActivity(), getColorities(folderColorings)));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -82,6 +83,7 @@ public class ImageGridFragment extends Fragment {
     protected void startImagePagerActivity(int position) {
         Intent intent = new Intent(getActivity(), ImageDetailsActivity.class);
         intent.putExtra("imagePosition", position);
+        intent.putExtra("folderColorings", folderColorings);
         startActivity(intent);
     }
 
