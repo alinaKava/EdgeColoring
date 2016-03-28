@@ -56,6 +56,16 @@ public class ImageWorkActivity extends AppCompatActivity {
                 doPhotoPrint();
             }
         }); //!!!
+
+        if (savedInstanceState != null) {
+            isSaved = savedInstanceState.getBoolean("is_saved");
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("is_saved", isSaved);
     }
 
     private void saveColority(File file) {
