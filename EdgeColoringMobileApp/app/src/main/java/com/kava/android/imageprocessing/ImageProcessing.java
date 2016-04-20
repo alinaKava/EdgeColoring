@@ -12,12 +12,9 @@ import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -148,42 +145,22 @@ public class ImageProcessing {
         return contours;
     }
 
-    public void loadImage(String imagePath)
+    public Bitmap loadImage(String imagePath)
     {
-//        File imgFile = new File("/sdcard/Images/test_image.jpg");
-//
-//        if(imgFile.exists()){
-//
-//            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-//
-//        }
-        String inputFileName="simm_01";
-        String inputExtension = "jpg";
-        String inputDir = imagePath;//getCacheDir().getAbsolutePath();  // use the cache directory for i/o
-        String outputDir = imagePath;//getCacheDir().getAbsolutePath();
-        String outputExtension = "png";
-        String inputFilePath = inputDir + File.separator + inputFileName + "." + inputExtension;
+        File imgFile = new File(imagePath);
 
-        File imgFile = new File(inputFilePath);
-
-        if(imgFile.exists()){
-
-            Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-
-        }
         Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-        Log.d(this.getClass().getSimpleName(), "loading " + inputFilePath + "...");
-        Mat image = Imgcodecs.imread(inputFilePath);
-        Log.d (this.getClass().getSimpleName(), "width of " + inputFileName + ": " + image.width());
-
-        String cannyFilename = outputDir+"ffLapl2.png";// + File.separator + inputFileName + "_canny-" + threshold1 + "-" + threshold2 + "." + outputExtension;
+        Log.d(this.getClass().getSimpleName(), "loading " + imagePath + "...");
 
         Mat imageMat = new Mat();
         Utils.bitmapToMat(myBitmap, imageMat);
-        imageMat = laplacianDetect(imageMat);
+        imageMat = cannyDetect(imageMat);
 
-        Imgcodecs.imwrite(cannyFilename, imageMat);
+        Bitmap bmp = Bitmap.createBitmap(imageMat.cols(), imageMat.rows(), Bitmap.Config.ARGB_8888);
+        Utils.matToBitmap(imageMat, bmp);
 
+        return bmp;
     }
+
 }
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="auto_print"
+        android:title="Automation print"/>
+    <EditTextPreference
+        android:key="default_path"
+        android:title="Default saving path"/>
+
+</PreferenceScreen>
