@@ -13,7 +13,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.kava.android.edgecoloringmobileapp.R;
+import com.kava.android.edgecoloringmobileapp.db.ColoringsDbHelper;
+import com.kava.android.edgecoloringmobileapp.model.Algorithm;
 import com.kava.android.edgecoloringmobileapp.utils.ActivityLifecycleHelper;
+import com.kava.android.edgecoloringmobileapp.utils.FileUtil;
 import com.kava.android.edgecoloringmobileapp.utils.PrintQueueHelper;
 import com.kava.android.imageprocessing.ImageProcessing;
 
@@ -27,11 +30,14 @@ import java.io.IOException;
 
 public class ImageWorkActivity extends AppCompatActivity {
 
+    private ColoringsDbHelper dbHelper;
     private Toolbar toolbar;
     private ImageView imageView;
     private boolean isSaved = false;
     private String colorityPath;
     private Bitmap image;
+    private String algorithmName = "Alg1";
+    private Algorithm algorithm;
 
     private ActivityLifecycleHelper lifecycleHelper;
 
@@ -60,6 +66,9 @@ public class ImageWorkActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             isSaved = savedInstanceState.getBoolean("is_saved");
         }
+
+        dbHelper = new ColoringsDbHelper(this);
+        algorithm = dbHelper.getAlgorithmByName(algorithmName);
     }
 
     @Override
@@ -68,7 +77,7 @@ public class ImageWorkActivity extends AppCompatActivity {
         outState.putBoolean("is_saved", isSaved);
     }
 
-    private void saveColority(File file) {
+    private void saveColoring(File file) {
 
         if (file.exists())
             file.delete();
@@ -89,6 +98,7 @@ public class ImageWorkActivity extends AppCompatActivity {
             }
         }
         isSaved = true;
+        dbHelper.addColoring(FileUtil.convertFileToColoring(file, algorithm));
         invalidateOptionsMenu();
     }
 
@@ -96,7 +106,7 @@ public class ImageWorkActivity extends AppCompatActivity {
         File file;
         if (!isSaved || colorityPath == null) {
             file = new File(getFilesDir() + "/user", "Colority_" + System.currentTimeMillis() + ".jpg");
-            saveColority(file);
+            saveColoring(file);
         } else {
             file = new File(colorityPath);
         }
@@ -142,7 +152,7 @@ public class ImageWorkActivity extends AppCompatActivity {
         else if (id == R.id.menu_save)
         {
             File file = new File(getFilesDir() + "/user", "Colority_" + System.currentTimeMillis() + ".jpg");
-            saveColority(file);
+            saveColoring(file);
             Toast.makeText(this, "Colority has been saved", Toast.LENGTH_LONG).show();
 
         }

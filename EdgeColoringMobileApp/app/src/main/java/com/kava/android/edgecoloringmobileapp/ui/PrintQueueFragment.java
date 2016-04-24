@@ -23,7 +23,7 @@ import java.util.Set;
  */
 public class PrintQueueFragment extends Fragment {
 
-    private ImageGridFragment.ImageAdapter mAdapter;
+    private ImageDefaultGridFragment.ImageAdapter mAdapter;
     private File[] mColorities;
     private GridView mListView;
 
@@ -39,7 +39,7 @@ public class PrintQueueFragment extends Fragment {
         mListView = (GridView) rootView.findViewById(R.id.gridView);
 
         mColorities = getColorities();
-        mAdapter = new ImageGridFragment.ImageAdapter(getActivity(), mColorities);
+        mAdapter = new ImageDefaultGridFragment.ImageAdapter(getActivity(), mColorities);
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,7 +84,7 @@ public class PrintQueueFragment extends Fragment {
         queue.remove(colority.getAbsolutePath());
 
         mColorities = getColorities();
-        mAdapter = new ImageGridFragment.ImageAdapter(getActivity(), mColorities);
+        mAdapter = new ImageDefaultGridFragment.ImageAdapter(getActivity(), mColorities);
         mListView.setAdapter(mAdapter);
     }
 

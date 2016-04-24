@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.kava.android.edgecoloringmobileapp.model.Algorithm;
 import com.kava.android.edgecoloringmobileapp.model.Coloring;
 
 import java.util.ArrayList;
@@ -17,9 +18,7 @@ import java.util.List;
  */
 public class ColoringsDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-
-    SQLiteDatabase db = getWritableDatabase();
-
+    private SQLiteDatabase db;
     private static final String TABLE_FILES = "files";
     private static final String COLUMN_FILE_ID = "file_id";
     private static final String COLUMN_PATH = "path";
@@ -56,7 +55,7 @@ public class ColoringsDbHelper extends SQLiteOpenHelper {
         for (String qeury : createQueries) {
             db.execSQL(qeury);
         }
-        addAlgorithms();
+        addAlgorithms(db);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -72,14 +71,45 @@ public class ColoringsDbHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    private void addAlgorithms(){
+    private void addAlgorithms(SQLiteDatabase db){
         for (String name : ALGORITHMS_NAME) {
-            addAlgorithm(name);
+            addAlgorithm(db, name);
         }
     }
 
+    public Algorithm getAlgorithmByName(String name){
+        Algorithm algorithm = new Algorithm();
+        Cursor cursor = getWritableDatabase().rawQuery("SELECT * FROM " + TABLE_ALGORITHMS + " WHERE " + COLUMN_NAME + " =? ", new String[]{name});
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int colId = cursor.getColumnIndexOrThrow(COLUMN_ALGORITHM_ID);
+                int colName = cursor.getColumnIndexOrThrow(COLUMN_NAME);
+                algorithm.setId(cursor.getInt(colId));
+                algorithm.setName(cursor.getString(colName));
+            }
+            cursor.close();
+        }
+        return algorithm;
+    }
+
+    public List<String> getAlgorithmsNames(){
+        List<String> names = new ArrayList<>();
+        Cursor cursor = getWritableDatabase().rawQuery("SELECT " + COLUMN_NAME + " FROM " + TABLE_ALGORITHMS, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int colName = cursor.getColumnIndexOrThrow(COLUMN_NAME);
+                do {
+                    names.add(cursor.getString(colName));
+                }
+                while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        return names;
+    }
+
     public List<Coloring> getColorings() {
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_FILES, null);
+        Cursor cursor = getWritableDatabase().rawQuery("SELECT * FROM " + TABLE_FILES, null);
         return toColorings(cursor);
     }
 
@@ -90,31 +120,31 @@ public class ColoringsDbHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DATE, coloring.getDate().getTime());
         values.put(COLUMN_SIZE, coloring.getSize());
         values.put(COLUMN_ALGORITHM_ID, coloring.getIdAlgorithm());
-        db.insert(TABLE_FILES, null, values);
+        getWritableDatabase().insert(TABLE_FILES, null, values);
     }
 
     public void removeColoring(Coloring coloring){
         int id = coloring.getId();
-        db.delete(TABLE_FILES, COLUMN_FILE_ID
+        getWritableDatabase().delete(TABLE_FILES, COLUMN_FILE_ID
                 + " = " + id, null);
     }
 
     public List<Coloring> getQueue(){
-        Cursor cursor = db.rawQuery("SELECT * " + " FROM " + TABLE_FILES + " LEFT JOIN " + TABLE_QUEUE + " ON " + TABLE_FILES + "." + COLUMN_FILE_ID + TABLE_QUEUE + "." + COLUMN_FILE_ID, null);
+        Cursor cursor = getWritableDatabase().rawQuery("SELECT * " + " FROM " + TABLE_FILES + " LEFT JOIN " + TABLE_QUEUE + " ON " + TABLE_FILES + "." + COLUMN_FILE_ID + TABLE_QUEUE + "." + COLUMN_FILE_ID, null);
         return toColorings(cursor);
     }
 
     public void removeFromColoring(Coloring coloring){
         int id = coloring.getId();
-        db.delete(TABLE_QUEUE, COLUMN_FILE_ID
+        getWritableDatabase().delete(TABLE_QUEUE, COLUMN_FILE_ID
                 + " = " + id, null);
     }
 
     public void clearQueue(){
-        db.delete(TABLE_QUEUE, null, null);
+        getWritableDatabase().delete(TABLE_QUEUE, null, null);
     }
 
-    public void addAlgorithm(String name){
+    public void addAlgorithm(SQLiteDatabase db, String name){
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, name);
         db.insert(TABLE_ALGORITHMS, null, values);

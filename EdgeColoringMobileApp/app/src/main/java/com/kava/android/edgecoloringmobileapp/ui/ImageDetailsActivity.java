@@ -32,12 +32,14 @@ public class ImageDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
 
-        int imagePosition = getIntent().getIntExtra("imagePosition", -1);
-        String folderColorings = getIntent().getStringExtra("folderColorings");
+        imagePath = getIntent().getStringExtra("path");
 
-        if (imagePosition >= 0) {
-            imagePath = loadImage(imagePosition, folderColorings);
-        }
+        imageView = (ImageView) findViewById(R.id.image);
+        Glide
+                .with(this)
+                .load(new File(imagePath))
+                .crossFade()
+                .into(imageView);
 
         FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
         myFab.setOnClickListener(new View.OnClickListener() {
@@ -54,17 +56,6 @@ public class ImageDetailsActivity extends AppCompatActivity {
 
     }
 
-    private String loadImage(int imagePosition, String folderColorings) {
-        File dir = new File(getFilesDir(), folderColorings);
-        File[] files = dir.listFiles();
-        imageView = (ImageView) findViewById(R.id.image);
-        Glide
-                .with(this)
-                .load(files[imagePosition])
-                .crossFade()
-                .into(imageView);
-        return files[imagePosition].getAbsolutePath();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

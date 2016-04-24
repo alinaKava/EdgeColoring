@@ -1,6 +1,5 @@
 package com.kava.android.edgecoloringmobileapp.ui;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,19 +15,22 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.kava.android.edgecoloringmobileapp.R;
+import com.kava.android.edgecoloringmobileapp.db.ColoringsDbHelper;
+import com.kava.android.edgecoloringmobileapp.model.Coloring;
 
 import java.io.File;
+import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Created by adminn on 24.04.2016.
  */
-public class ImageGridFragment extends Fragment {
+public class ImageDBGridFragment extends Fragment {
 
-    private String folderColorings = "";
     private GridView mListView;
+    private ColoringsDbHelper dbHelper;
 
-    public ImageGridFragment() {
-        // Required empty public constructor
+    public ImageDBGridFragment() {
+        // Requireda empty public constructor
     }
 
     @Override
@@ -39,9 +41,7 @@ public class ImageGridFragment extends Fragment {
         mListView = (GridView) rootView.findViewById(R.id.gridView);
         FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.fabCreate);
         myFab.setVisibility(View.GONE);
-        
-        folderColorings = getArguments().getString("folder");
-        
+
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -53,37 +53,40 @@ public class ImageGridFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        dbHelper = new ColoringsDbHelper(getActivity());
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        mListView.setAdapter(new ImageAdapter(getActivity(), getColorities(folderColorings)));
+        mListView.setAdapter(new ImageAdapter(getActivity(), getColorings()));
     }
 
     protected void startImagePagerActivity(int position) {
         Intent intent = new Intent(getActivity(), ImageDetailsActivity.class);
-        intent.putExtra("imagePosition", position);
-        intent.putExtra("folderColorings", folderColorings);
+        intent.putExtra("path", getColorings().get(position).getPath());
         startActivity(intent);
     }
 
-    private File[] getColorities(String folder){
-        File dir = new File(getActivity().getFilesDir(), folder);
-        File[] files = dir.listFiles();
-        return files;
+    private List<Coloring> getColorings(){
+        return dbHelper.getColorings();
     }
 
     public static class ImageAdapter extends BaseAdapter {
 
         private LayoutInflater inflater;
-        private File[] files;
+        private List<Coloring> files;
 
-        ImageAdapter(Context context, File[] files) {
+        ImageAdapter(Context context, List<Coloring> files) {
             inflater = LayoutInflater.from(context);
             this.files = files;
         }
 
         @Override
         public int getCount() {
-            return files.length;
+            return files.size();
         }
 
         @Override
@@ -112,7 +115,7 @@ public class ImageGridFragment extends Fragment {
 
             Glide
                     .with(parent.getContext())
-                    .load(files[position])
+                    .load(new File(files.get(position).getPath()))
                     .centerCrop()
                     .crossFade()
                     .into(holder.imageView);
