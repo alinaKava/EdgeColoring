@@ -123,8 +123,6 @@ public class MainActivity extends AppCompatActivity {
         final File dir = new File(getFilesDir(), "user");
         if (!dir.exists()) {
             dir.mkdir();
-
-
         }
     }
 
