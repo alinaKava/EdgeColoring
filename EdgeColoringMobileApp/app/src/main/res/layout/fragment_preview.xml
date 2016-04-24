@@ -21,6 +21,6 @@
         android:id="@+id/preview_pager"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@id/tab_layout"/>
+        android:layout_below="@id/preview_tab_layout"/>
 
 </RelativeLayout>
