@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kava.android.edgecoloringmobileapp" >
+    package="com.kava.android.edgecoloringmobileapp">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -10,15 +10,15 @@
 
     <application
         android:allowBackup="true"
-        android:largeHeap="true"
         android:icon="@drawable/ic_blur_on_white_36dp"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +27,7 @@
         </activity>
         <activity
             android:name=".ui.PrintDialogActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="com.kava.android.edgecoloringmobileapp.PrintDialogActivity" />
 
@@ -41,7 +41,7 @@
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.kava.android.edgecoloringmobileapp.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
@@ -49,8 +49,8 @@
 
         <activity
             android:name=".ui.SettingsActivity"
-            android:label="@string/settings_nav_item" >
-        </activity>
+            android:label="@string/settings_nav_item"></activity>
+        <activity android:name=".ui.PreviewActivity"></activity>
     </application>
 
 </manifest>

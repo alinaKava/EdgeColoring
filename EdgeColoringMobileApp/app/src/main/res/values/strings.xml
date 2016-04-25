@@ -4,6 +4,7 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="make_nav_item">Make new</string>
     <string name="colorings_nav_item">Colorings</string>
+    <string name="algorithms_title">Algorithms</string>
     <string name="print_nav_item">Print queue</string>
     <string name="settings_nav_item">Settings</string>
     <string name="camera_item">From camera</string>

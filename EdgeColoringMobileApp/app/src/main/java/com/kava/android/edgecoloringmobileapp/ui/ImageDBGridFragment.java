@@ -3,7 +3,6 @@ package com.kava.android.edgecoloringmobileapp.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,10 +36,7 @@ public class ImageDBGridFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.image_grid_view, container, false);
-        View view = inflater.inflate(R.layout.home_view, container, false);
         mListView = (GridView) rootView.findViewById(R.id.gridView);
-        FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.fabCreate);
-        myFab.setVisibility(View.GONE);
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

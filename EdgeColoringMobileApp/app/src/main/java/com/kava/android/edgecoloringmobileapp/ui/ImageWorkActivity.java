@@ -1,5 +1,6 @@
 package com.kava.android.edgecoloringmobileapp.ui;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -34,7 +35,7 @@ public class ImageWorkActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ImageView imageView;
     private boolean isSaved = false;
-    private String colorityPath;
+    private String imagePath;
     private Bitmap image;
     private String algorithmName = "Alg1";
     private Algorithm algorithm;
@@ -53,7 +54,7 @@ public class ImageWorkActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
 
-        final String imagePath = getIntent().getStringExtra("imagePath");
+        imagePath = getIntent().getStringExtra("imagePath");
         image = loadImage(imagePath);
 
         FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
@@ -102,13 +103,13 @@ public class ImageWorkActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
-    private void doPhotoPrint() {
+    private void doPhotoPrint() { //!!!
         File file;
-        if (!isSaved || colorityPath == null) {
-            file = new File(getFilesDir() + "/user", "Colority_" + System.currentTimeMillis() + ".jpg");
+        if (!isSaved || imagePath == null) {
+            file = new File(getFilesDir() + "/user", "Coloring_" + System.currentTimeMillis() + ".jpg");
             saveColoring(file);
         } else {
-            file = new File(colorityPath);
+            file = new File(imagePath);
         }
 
         if (!PrintQueueHelper.print(this, file.getAbsolutePath(), file.getName(), false))
@@ -156,9 +157,11 @@ public class ImageWorkActivity extends AppCompatActivity {
             Toast.makeText(this, "Colority has been saved", Toast.LENGTH_LONG).show();
 
         }
-        else if (id == R.id.menu_edit)
+        else if (id == R.id.menu_more_alg)
         {
-            Toast.makeText(this, "Sorry, you're using the free version", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, PreviewActivity.class);
+            intent.putExtra("path", imagePath);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -177,10 +180,9 @@ public class ImageWorkActivity extends AppCompatActivity {
         return true;
     }
 
-
     private Bitmap loadImage(String path) {
         ImageProcessing proc = new ImageProcessing();
-        Bitmap colority = proc.loadImage(path);
+        Bitmap colority = proc.loadImage(path, algorithmName);
         imageView.setImageBitmap(colority);
         return colority;
     }

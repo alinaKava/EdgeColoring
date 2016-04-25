@@ -6,11 +6,11 @@
         android:id="@+id/menu_save"
         android:icon="@drawable/ic_save_white_24dp"
         app:showAsAction="ifRoom"
-        android:title="Save"/>m"
-        android:title="Print" />
+        android:title="Save"/>
     <item
-        android:id="@+id/menu_edit"
+        android:id="@+id/menu_more_alg"
         android:icon="@drawable/ic_mode_edit_white_24dp"
         app:showAsAction="ifRoom"
-        android:title="Print" />
+        android:title="More" />
+
 </menu>

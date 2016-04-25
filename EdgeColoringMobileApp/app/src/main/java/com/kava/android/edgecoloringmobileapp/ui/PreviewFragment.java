@@ -12,17 +12,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kava.android.edgecoloringmobileapp.R;
-import com.kava.android.edgecoloringmobileapp.adapters.PagerAdapter;
+import com.kava.android.edgecoloringmobileapp.adapters.PreviewPagerAdapter;
 import com.kava.android.edgecoloringmobileapp.db.ColoringsDbHelper;
+
+import java.util.List;
 
 /**
  * Created by adminn on 24.04.2016.
  */
 public class PreviewFragment extends Fragment {
+
+    private String imagePath;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+
+        imagePath = getArguments().getString("path");
 
         return inflater.inflate(R.layout.fragment_preview, container, false);
     }
@@ -32,14 +39,15 @@ public class PreviewFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.preview_tab_layout);
         ColoringsDbHelper dbHelper = new ColoringsDbHelper(getActivity());
-
-        tabLayout.addTab(tabLayout.newTab().setText("Default"));
-        tabLayout.addTab(tabLayout.newTab().setText("User"));
+        List<String> tabsNames = dbHelper.getAlgorithmsNames();
+        for (String name : tabsNames) {
+            tabLayout.addTab(tabLayout.newTab().setText(name));
+        }
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) view.findViewById(R.id.preview_pager);
-        final PagerAdapter adapter = new PagerAdapter
-                (getFragmentManager(), tabLayout.getTabCount());
+        final PreviewPagerAdapter adapter = new PreviewPagerAdapter
+                (getFragmentManager(), tabLayout.getTabCount(), imagePath);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -59,10 +67,10 @@ public class PreviewFragment extends Fragment {
             }
         });
 
-        FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.fabCreate);
+        FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.fabChoose);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                ((MainActivity) getActivity()).createDialog();
+
             }
         });
 
@@ -72,6 +80,16 @@ public class PreviewFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.menu_main, menu);
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

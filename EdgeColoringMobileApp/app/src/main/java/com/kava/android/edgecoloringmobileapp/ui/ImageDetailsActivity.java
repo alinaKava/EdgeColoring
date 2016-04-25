@@ -63,8 +63,6 @@ public class ImageDetailsActivity extends AppCompatActivity {
         if (id == android.R.id.home) {
             onBackPressed();
             return true;
-        } else if (id == R.id.menu_edit) {
-            Toast.makeText(this, "Sorry, you're using the free version", Toast.LENGTH_LONG).show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -74,6 +72,8 @@ public class ImageDetailsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_home, menu);
         MenuItem item = menu.findItem(R.id.menu_save);
+        item.setVisible(false);
+        item = menu.findItem(R.id.menu_more_alg);
         item.setVisible(false);
         return true;
     }

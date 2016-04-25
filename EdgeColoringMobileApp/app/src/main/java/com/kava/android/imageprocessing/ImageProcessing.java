@@ -145,7 +145,7 @@ public class ImageProcessing {
         return contours;
     }
 
-    public Bitmap loadImage(String imagePath)
+    public Bitmap loadImage(String imagePath, String algorithmName)
     {
         File imgFile = new File(imagePath);
 
@@ -154,12 +154,28 @@ public class ImageProcessing {
 
         Mat imageMat = new Mat();
         Utils.bitmapToMat(myBitmap, imageMat);
-        imageMat = cannyDetect(imageMat);
+        imageMat = chooseAlgorithm(imageMat, algorithmName);
 
         Bitmap bmp = Bitmap.createBitmap(imageMat.cols(), imageMat.rows(), Bitmap.Config.ARGB_8888);
         Utils.matToBitmap(imageMat, bmp);
 
         return bmp;
+    }
+
+    private Mat chooseAlgorithm(Mat imageMat, String algorithmName)
+    {
+        Mat mat = new Mat();
+        switch (algorithmName){
+            case "Alg1" : mat = cannyDetect(imageMat);
+                break;
+            case "Alg2" : mat = sobelDetect(imageMat);
+                break;
+            case "Alg3" : mat = laplacianDetect(imageMat);
+                break;
+            case "Alg4" : mat = harrisCornerDetect(imageMat);
+            default: mat = cannyDetect(imageMat);
+        }
+        return mat;
     }
 
 }

@@ -23,4 +23,14 @@
         android:layout_height="fill_parent"
         android:layout_below="@id/preview_tab_layout"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabChoose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_add_circle_outline_white_24dp"/>
+
+
 </RelativeLayout>
