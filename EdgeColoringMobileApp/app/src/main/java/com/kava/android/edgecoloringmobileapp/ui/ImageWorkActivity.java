@@ -17,6 +17,7 @@ import com.kava.android.edgecoloringmobileapp.R;
 import com.kava.android.edgecoloringmobileapp.db.ColoringsDbHelper;
 import com.kava.android.edgecoloringmobileapp.model.Algorithm;
 import com.kava.android.edgecoloringmobileapp.utils.ActivityLifecycleHelper;
+import com.kava.android.edgecoloringmobileapp.utils.AlgorithmsHelper;
 import com.kava.android.edgecoloringmobileapp.utils.FileUtil;
 import com.kava.android.edgecoloringmobileapp.utils.PrintQueueHelper;
 import com.kava.android.imageprocessing.ImageProcessing;
@@ -55,6 +56,8 @@ public class ImageWorkActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
 
         imagePath = getIntent().getStringExtra("imagePath");
+        algorithmName = AlgorithmsHelper.getAlgorithmName(this, getIntent().getIntExtra("position", 0));
+
         image = loadImage(imagePath);
 
         FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);

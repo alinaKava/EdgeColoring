@@ -9,10 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.kava.android.edgecoloringmobileapp.R;
-import com.kava.android.edgecoloringmobileapp.db.ColoringsDbHelper;
+import com.kava.android.edgecoloringmobileapp.utils.AlgorithmsHelper;
 import com.kava.android.imageprocessing.ImageProcessing;
-
-import java.util.List;
 
 /**
  * Created by adminn on 24.04.2016.
@@ -36,7 +34,7 @@ public class AlgorithmImageFragment extends Fragment {
         algorithmPosition = getArguments().getInt("position", 0);
         imagePath = getArguments().getString("path");
         proc = new ImageProcessing();
-        Bitmap colority = proc.loadImage(imagePath, getAlgorithmName(algorithmPosition));
+        Bitmap colority = proc.loadImage(imagePath, AlgorithmsHelper.getAlgorithmName(getContext(), algorithmPosition));
         imageView.setImageBitmap(colority);
         return rootView;
     }
@@ -49,15 +47,6 @@ public class AlgorithmImageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-    }
-
-    private String getAlgorithmName(int position){
-        ColoringsDbHelper dbHelper = new ColoringsDbHelper(getContext());
-        List<String> names = dbHelper.getAlgorithmsNames();
-        if (position < names.size())
-            return names.get(position);
-        else
-            return names.get(0);
     }
 
 }

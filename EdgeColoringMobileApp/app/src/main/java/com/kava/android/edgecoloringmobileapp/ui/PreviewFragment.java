@@ -1,5 +1,6 @@
 package com.kava.android.edgecoloringmobileapp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -23,6 +24,7 @@ import java.util.List;
 public class PreviewFragment extends Fragment {
 
     private String imagePath;
+    private int tabPosition = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +56,7 @@ public class PreviewFragment extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                tabPosition = tab.getPosition();
             }
 
             @Override
@@ -70,7 +73,10 @@ public class PreviewFragment extends Fragment {
         FloatingActionButton myFab = (FloatingActionButton) view.findViewById(R.id.fabChoose);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                Intent intent = new Intent(getContext(), ImageWorkActivity.class);
+                intent.putExtra("imagePath", imagePath);
+                intent.putExtra("position", tabPosition);
+                getActivity().startActivityForResult(intent, 1);
             }
         });
 
