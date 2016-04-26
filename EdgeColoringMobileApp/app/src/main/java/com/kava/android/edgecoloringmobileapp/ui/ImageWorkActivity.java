@@ -1,8 +1,10 @@
 package com.kava.android.edgecoloringmobileapp.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,7 +18,6 @@ import android.widget.Toast;
 import com.kava.android.edgecoloringmobileapp.R;
 import com.kava.android.edgecoloringmobileapp.db.ColoringsDbHelper;
 import com.kava.android.edgecoloringmobileapp.model.Algorithm;
-import com.kava.android.edgecoloringmobileapp.utils.ActivityLifecycleHelper;
 import com.kava.android.edgecoloringmobileapp.utils.AlgorithmsHelper;
 import com.kava.android.edgecoloringmobileapp.utils.FileUtil;
 import com.kava.android.edgecoloringmobileapp.utils.PrintQueueHelper;
@@ -42,8 +43,6 @@ public class ImageWorkActivity extends AppCompatActivity {
     private String algorithmName = "Alg1";
     private Algorithm algorithm;
 
-    private ActivityLifecycleHelper lifecycleHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -51,13 +50,21 @@ public class ImageWorkActivity extends AppCompatActivity {
         setContentView(R.layout.activity_image_detail);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         imageView = (ImageView) findViewById(R.id.image);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp);
 
         imagePath = getIntent().getStringExtra("imagePath");
-        algorithmName = AlgorithmsHelper.getAlgorithmName(this, getIntent().getIntExtra("position", 0));
+        int pos;
+        if ((pos = getIntent().getIntExtra("position", -1)) == -1){
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            algorithmName = sharedPref.getString(SettingsActivity.KEY_PREF_SYNC_CONN, "");
+        }
+        else {
+            algorithmName = AlgorithmsHelper.getAlgorithmName(this, pos);
+        }
 
         image = loadImage(imagePath);
 
@@ -110,15 +117,8 @@ public class ImageWorkActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
-    private void doPhotoPrint() { //!!!
+    private void doPhotoPrint() {
         File file = new File(imagePath);
-//        if (!isSaved || imagePath == null) {
-//            file = new File(getFilesDir() + "/user", "Coloring_" + System.currentTimeMillis() + ".jpg");
-//            saveColoring(file);
-//        } else {
-//            file = new File(imagePath);
-//        }
-
         if (!PrintQueueHelper.print(this, file.getAbsolutePath(), file.getName(), false))
             Toast.makeText(this, "No internet connection, coloring has been added to print queue", Toast.LENGTH_LONG).show();
     }

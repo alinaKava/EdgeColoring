@@ -9,6 +9,11 @@
     <string name="settings_nav_item">Settings</string>
     <string name="camera_item">From camera</string>
     <string name="image_item">Image</string>
-    <string name="colority_item">Colority</string>
     <string name="header">CMammy</string>
+    <string name="coloring_item">Coloring</string>
+    <string name="alg1">Alg1</string>
+    <string name="alg2">Alg2</string>
+    <string name="alg3">Alg3</string>
+    <string name="alg4">Alg4</string>
+    <string name="alg5">Alg5</string>
 </resources>
