@@ -1,7 +1,6 @@
 package com.kava.android.edgecoloringmobileapp.ui;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,14 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.kava.android.edgecoloringmobileapp.R;
+import com.kava.android.edgecoloringmobileapp.db.ColoringsDbHelper;
+import com.kava.android.edgecoloringmobileapp.model.Coloring;
 
-import java.io.File;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,10 +23,14 @@ import java.io.File;
 public class ImageDefaultGridFragment extends Fragment {
 
     private GridView mListView;
+    private ColoringsDbHelper dbHelper;
 
-    public ImageDefaultGridFragment() {
-        // Required empty public constructor
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        dbHelper = new ColoringsDbHelper(getActivity());
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,73 +54,17 @@ public class ImageDefaultGridFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        mListView.setAdapter(new ImageAdapter(getActivity(), getColorings()));
+        mListView.setAdapter(new ImageUserGridFragment.ImageAdapter(getActivity(), getColorings()));
     }
 
     protected void startImagePagerActivity(int position) {
         Intent intent = new Intent(getActivity(), ImageDetailsActivity.class);
-        intent.putExtra("path", getColorings()[position].getAbsolutePath());
+        intent.putExtra("path", getColorings().get(position).getPath());
         startActivity(intent);
     }
 
-    private File[] getColorings(){
-        File dir = new File(getActivity().getFilesDir(), "defaults");
-        File[] files = dir.listFiles();
-        return files;
-    }
-
-    public static class ImageAdapter extends BaseAdapter {
-
-        private LayoutInflater inflater;
-        private File[] files;
-
-        ImageAdapter(Context context, File[] files) {
-            inflater = LayoutInflater.from(context);
-            this.files = files;
-        }
-
-        @Override
-        public int getCount() {
-            return files.length;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            final ViewHolder holder;
-            View view = convertView;
-            if (view == null) {
-                view = inflater.inflate(R.layout.item_grid_image, parent, false);
-                holder = new ViewHolder();
-                assert view != null;
-                holder.imageView = (ImageView) view.findViewById(R.id.image);
-                view.setTag(holder);
-            } else {
-                holder = (ViewHolder) view.getTag();
-            }
-
-            Glide
-                    .with(parent.getContext())
-                    .load(files[position])
-                    .centerCrop()
-                    .crossFade()
-                    .into(holder.imageView);
-
-            return view;
-        }
-    }
-
-    static class ViewHolder {
-        ImageView imageView;
+    private List<Coloring> getColorings(){
+        return dbHelper.getColorings(ColoringsDbHelper.IS_DEFAULT);
     }
 
 }

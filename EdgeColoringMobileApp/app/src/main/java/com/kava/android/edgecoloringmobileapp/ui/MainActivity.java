@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.kava.android.edgecoloringmobileapp.R;
+import com.kava.android.edgecoloringmobileapp.db.ColoringsDbHelper;
 import com.kava.android.edgecoloringmobileapp.utils.ActivityLifecycleHelper;
 
 import org.opencv.android.BaseLoaderCallback;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
         // Setup drawer view
         setupDrawerContent(nvDrawer);
-        addDefaultColorities();
+        addDefaultColorings();
         createUserFolder();
 
         lifecycleHelper = new ActivityLifecycleHelper(this);
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void addDefaultColorities() {
+    private void addDefaultColorings() {
         final File dir = new File(getFilesDir(), "defaults");
         if (!dir.exists()) {
             dir.mkdir();
@@ -113,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     //TODO your background code
                     copyAssetFolder(getAssets(), "files", dir.getAbsolutePath());
+                    new ColoringsDbHelper(getBaseContext()).addDefaultColorings(dir);
                 }
             });
 

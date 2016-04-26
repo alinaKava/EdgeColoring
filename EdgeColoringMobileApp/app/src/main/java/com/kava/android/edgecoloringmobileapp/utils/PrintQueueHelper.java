@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.support.v4.content.FileProvider;
 
+import com.kava.android.edgecoloringmobileapp.db.ColoringsDbHelper;
 import com.kava.android.edgecoloringmobileapp.ui.PrintDialogActivity;
 
 import java.io.File;
@@ -30,7 +31,7 @@ public class PrintQueueHelper {
         if (result) {
 
             if (title == null) {
-                title = "Colority_" + System.currentTimeMillis();
+                title = "Coloring_" + System.currentTimeMillis();
             }
 
             File requestFile = new File(path);
@@ -52,11 +53,13 @@ public class PrintQueueHelper {
         return result;
     }
 
-    private static void addJobToQueue(Context context, String colorityPath) {
-        SharedPreferences pref = getPreferences(context);
-        Set<String> queue = pref.getStringSet(KEY_QUEUE, new LinkedHashSet<String>());
-        queue.add(colorityPath);
-        pref.edit().putStringSet(KEY_QUEUE, queue).apply();
+    private static void addJobToQueue(Context context, String coloringPath) {
+        ColoringsDbHelper dbHelper = new ColoringsDbHelper(context);
+        int id = dbHelper.getColoringIdByPath(coloringPath);
+        if (!dbHelper.isInQueue(id))
+        {
+            dbHelper.addToQueue(id);
+        }
     }
 
     public static Set<String> getQueue(Context context) {

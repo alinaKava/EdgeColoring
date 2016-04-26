@@ -11,6 +11,7 @@ public class Coloring {
     private String path;
     private long size;
     private Date date;
+    private int isDefault;
 
     public Date getDate() {
         return date;
@@ -36,6 +37,14 @@ public class Coloring {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(int isDefault) {
+        this.isDefault = isDefault;
     }
 
     public String getPath() {

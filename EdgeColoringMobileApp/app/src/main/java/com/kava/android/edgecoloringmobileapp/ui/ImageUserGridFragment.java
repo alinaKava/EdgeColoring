@@ -23,12 +23,12 @@ import java.util.List;
 /**
  * Created by adminn on 24.04.2016.
  */
-public class ImageDBGridFragment extends Fragment {
+public class ImageUserGridFragment extends Fragment {
 
     private GridView mListView;
     private ColoringsDbHelper dbHelper;
 
-    public ImageDBGridFragment() {
+    public ImageUserGridFragment() {
         // Requireda empty public constructor
     }
 
@@ -67,7 +67,7 @@ public class ImageDBGridFragment extends Fragment {
     }
 
     private List<Coloring> getColorings(){
-        return dbHelper.getColorings();
+        return dbHelper.getColorings(ColoringsDbHelper.IS_NOT_DEFAULT);
     }
 
     public static class ImageAdapter extends BaseAdapter {

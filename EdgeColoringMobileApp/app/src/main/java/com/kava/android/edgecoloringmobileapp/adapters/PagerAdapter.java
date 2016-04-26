@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.kava.android.edgecoloringmobileapp.ui.ImageDBGridFragment;
+import com.kava.android.edgecoloringmobileapp.ui.ImageUserGridFragment;
 import com.kava.android.edgecoloringmobileapp.ui.ImageDefaultGridFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
@@ -23,7 +23,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 ImageDefaultGridFragment tab1 = new ImageDefaultGridFragment();
                 return tab1;
             case 1:
-                ImageDBGridFragment tab2 = new ImageDBGridFragment();
+                ImageUserGridFragment tab2 = new ImageUserGridFragment();
                 return tab2;
             default:
                 return null;

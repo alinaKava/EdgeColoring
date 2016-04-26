@@ -34,6 +34,7 @@ public class ImageWorkActivity extends AppCompatActivity {
 
     private ColoringsDbHelper dbHelper;
     private Toolbar toolbar;
+    private FloatingActionButton myFab;
     private ImageView imageView;
     private boolean isSaved = false;
     private String imagePath;
@@ -60,12 +61,13 @@ public class ImageWorkActivity extends AppCompatActivity {
 
         image = loadImage(imagePath);
 
-        FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
+        myFab = (FloatingActionButton) findViewById(R.id.fab);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 doPhotoPrint();
             }
         }); //!!!
+        myFab.setVisibility(View.GONE);
 
         if (savedInstanceState != null) {
             isSaved = savedInstanceState.getBoolean("is_saved");
@@ -101,19 +103,21 @@ public class ImageWorkActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+        imagePath = file.getAbsolutePath();
         isSaved = true;
-        dbHelper.addColoring(FileUtil.convertFileToColoring(file, algorithm));
+        dbHelper.addColoring(FileUtil.convertFileToColoring(file, algorithm, ColoringsDbHelper.IS_NOT_DEFAULT));
+        myFab.setVisibility(View.VISIBLE);
         invalidateOptionsMenu();
     }
 
     private void doPhotoPrint() { //!!!
-        File file;
-        if (!isSaved || imagePath == null) {
-            file = new File(getFilesDir() + "/user", "Coloring_" + System.currentTimeMillis() + ".jpg");
-            saveColoring(file);
-        } else {
-            file = new File(imagePath);
-        }
+        File file = new File(imagePath);
+//        if (!isSaved || imagePath == null) {
+//            file = new File(getFilesDir() + "/user", "Coloring_" + System.currentTimeMillis() + ".jpg");
+//            saveColoring(file);
+//        } else {
+//            file = new File(imagePath);
+//        }
 
         if (!PrintQueueHelper.print(this, file.getAbsolutePath(), file.getName(), false))
             Toast.makeText(this, "No internet connection, coloring has been added to print queue", Toast.LENGTH_LONG).show();
