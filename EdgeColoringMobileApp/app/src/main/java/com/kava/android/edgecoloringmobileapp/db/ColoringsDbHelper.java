@@ -105,6 +105,19 @@ public class ColoringsDbHelper extends SQLiteOpenHelper {
         return algorithm;
     }
 
+    public String getAlgorithmName(int id){
+        String name = "";
+        Cursor cursor = getWritableDatabase().rawQuery("SELECT " + COLUMN_NAME + " FROM " + TABLE_ALGORITHMS + " WHERE " + COLUMN_ALGORITHM_ID + " =? ", new String[]{Integer.toString(id)});
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int colName = cursor.getColumnIndexOrThrow(COLUMN_NAME);
+                name = cursor.getString(colName);
+            }
+            cursor.close();
+        }
+        return name;
+    }
+
     public List<String> getAlgorithmsNames(){
         List<String> names = new ArrayList<>();
         Cursor cursor = getWritableDatabase().rawQuery("SELECT " + COLUMN_NAME + " FROM " + TABLE_ALGORITHMS, null);
@@ -141,6 +154,12 @@ public class ColoringsDbHelper extends SQLiteOpenHelper {
         return id;
     }
 
+    public Coloring getColoringByPath(String path){
+        int id = 0;
+        Cursor cursor = getWritableDatabase().rawQuery("SELECT * FROM " + TABLE_FILES + " WHERE " + COLUMN_PATH + " =? ", new String[]{path});
+        return toColorings(cursor).get(0);
+    }
+
     public Boolean isInQueue(int coloringId){
         Boolean result = false;
         Cursor cursor = getWritableDatabase().rawQuery("SELECT * " + " FROM " + TABLE_QUEUE + " WHERE " + COLUMN_FILE_ID + " =? ", new String[]{Integer.toString(coloringId)});
@@ -162,8 +181,7 @@ public class ColoringsDbHelper extends SQLiteOpenHelper {
         getWritableDatabase().insert(TABLE_FILES, null, values);
     }
 
-    public void removeColoring(Coloring coloring){
-        int id = coloring.getId();
+    public void removeColoring(int id){
         getWritableDatabase().delete(TABLE_FILES, COLUMN_FILE_ID
                 + " = " + id, null);
     }
@@ -173,19 +191,13 @@ public class ColoringsDbHelper extends SQLiteOpenHelper {
         return toColorings(cursor);
     }
 
-    public void removeFromColoring(Coloring coloring){
-        int id = coloring.getId();
-        getWritableDatabase().delete(TABLE_QUEUE, COLUMN_FILE_ID
-                + " = " + id, null);
-    }
-
     public void addToQueue(int id){
         ContentValues values = new ContentValues();
         values.put(COLUMN_FILE_ID, id);
         getWritableDatabase().insert(TABLE_QUEUE, null, values);
     }
 
-    public void deleteFromQueue(int id){
+    public void removeFromQueue(int id){
         getWritableDatabase().delete(TABLE_QUEUE, COLUMN_FILE_ID
                 + " = " + id, null);
     }
@@ -201,7 +213,7 @@ public class ColoringsDbHelper extends SQLiteOpenHelper {
     }
 
     private static List<Coloring> toColorings(Cursor cursor){
-        List<Coloring> colorigs = new ArrayList<>();
+        List<Coloring> colorings = new ArrayList<>();
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 int colId = cursor.getColumnIndexOrThrow(COLUMN_FILE_ID);
@@ -218,12 +230,12 @@ public class ColoringsDbHelper extends SQLiteOpenHelper {
                     coloring.setDate(new Date(cursor.getLong(colDate)));
                     coloring.setSize(cursor.getInt(colSize));
                     coloring.setIdAlgorithm(cursor.getInt(colAlgorithm));
-                    colorigs.add(coloring);
+                    colorings.add(coloring);
                 }
                 while (cursor.moveToNext());
             }
             cursor.close();
         }
-        return colorigs;
+        return colorings;
     }
 }

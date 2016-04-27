@@ -76,7 +76,7 @@ public class PrintQueueFragment extends Fragment {
     }
 
     private void delete(int position) {
-        dbHelper.deleteFromQueue(mColorings.get(position).getId());
+        dbHelper.removeFromQueue(mColorings.get(position).getId());
         mColorings = getColorings();
         mAdapter = new ImageUserGridFragment.ImageAdapter(getActivity(), mColorings);
         mListView.setAdapter(mAdapter);

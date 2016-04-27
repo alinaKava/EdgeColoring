@@ -60,6 +60,7 @@ public class ImageDefaultGridFragment extends Fragment {
     protected void startImagePagerActivity(int position) {
         Intent intent = new Intent(getActivity(), ImageDetailsActivity.class);
         intent.putExtra("path", getColorings().get(position).getPath());
+        intent.putExtra("isDefault", true);
         startActivity(intent);
     }
 

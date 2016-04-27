@@ -9,7 +9,17 @@
         android:title="Save"/>
     <item
         android:id="@+id/menu_more_alg"
-        android:icon="@drawable/ic_mode_edit_white_24dp"
+        android:icon="@drawable/ic_photo_filter_white_24dp"
+        app:showAsAction="ifRoom"
+        android:title="More" />
+    <item
+        android:id="@+id/menu_delete"
+        android:icon="@drawable/ic_delete_forever_white_24dp"
+        app:showAsAction="ifRoom"
+        android:title="More" />
+    <item
+        android:id="@+id/menu_more_info"
+        android:icon="@drawable/ic_more_vert_white_24dp"
         app:showAsAction="ifRoom"
         android:title="More" />
 

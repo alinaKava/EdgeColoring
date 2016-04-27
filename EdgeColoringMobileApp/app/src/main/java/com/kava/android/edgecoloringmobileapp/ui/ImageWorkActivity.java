@@ -159,9 +159,9 @@ public class ImageWorkActivity extends AppCompatActivity {
 
         else if (id == R.id.menu_save)
         {
-            File file = new File(getFilesDir() + "/user", "Colority_" + System.currentTimeMillis() + ".jpg");
+            File file = new File(getFilesDir() + "/user", "Coloring_" + System.currentTimeMillis() + ".jpg");
             saveColoring(file);
-            Toast.makeText(this, "Colority has been saved", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Coloring has been saved", Toast.LENGTH_LONG).show();
 
         }
         else if (id == R.id.menu_more_alg)
@@ -178,6 +178,12 @@ public class ImageWorkActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem item = menu.findItem(R.id.menu_save);
         item.setVisible(!isSaved);
+        item = menu.findItem(R.id.menu_more_alg);
+        item.setVisible(!isSaved);
+        item = menu.findItem(R.id.menu_delete);
+        item.setVisible(isSaved);
+        item = menu.findItem(R.id.menu_more_info);
+        item.setVisible(isSaved);
         return super.onPrepareOptionsMenu(menu);
     }
 
