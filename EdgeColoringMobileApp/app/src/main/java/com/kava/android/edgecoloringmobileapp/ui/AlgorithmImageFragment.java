@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.kava.android.edgecoloringmobileapp.R;
-import com.kava.android.edgecoloringmobileapp.utils.AlgorithmsHelper;
 import com.kava.android.imageprocessing.ImageProcessing;
 
 /**
@@ -34,8 +33,8 @@ public class AlgorithmImageFragment extends Fragment {
         algorithmPosition = getArguments().getInt("position", 0);
         imagePath = getArguments().getString("path");
         proc = new ImageProcessing();
-        Bitmap colority = proc.loadImage(imagePath, AlgorithmsHelper.getAlgorithmName(getContext(), algorithmPosition));
-        imageView.setImageBitmap(colority);
+        Bitmap coloring = proc.loadImage(imagePath, algorithmPosition);
+        imageView.setImageBitmap(coloring);
         return rootView;
     }
 

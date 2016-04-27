@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createDialog() {
-        final CharSequence[] options = {"Take photo", "Colority", "Choose from gallery"};
+        final CharSequence[] options = {"Take photo", "Choose from gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Make new");
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -205,8 +205,6 @@ public class MainActivity extends AppCompatActivity {
                 if (which == 0) {
                     lifecycleHelper.startImageTaking();
                 } else if (which == 1) {
-                    lifecycleHelper.startImagePicking();
-                } else if (which == 2) {
                     lifecycleHelper.startImagePicking();
                 }
             }

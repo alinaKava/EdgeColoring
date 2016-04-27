@@ -195,7 +195,7 @@ public class ImageWorkActivity extends AppCompatActivity {
 
     private Bitmap loadImage(String path) {
         ImageProcessing proc = new ImageProcessing();
-        Bitmap colority = proc.loadImage(path, algorithmName);
+        Bitmap colority = proc.loadImage(path, AlgorithmsHelper.getAlgorithmId(this, algorithmName));
         imageView.setImageBitmap(colority);
         return colority;
     }

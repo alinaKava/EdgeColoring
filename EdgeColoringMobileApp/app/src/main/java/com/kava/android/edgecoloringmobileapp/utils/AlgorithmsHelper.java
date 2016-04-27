@@ -20,4 +20,15 @@ public class AlgorithmsHelper {
             return names.get(0);
     }
 
+    public static int getAlgorithmId(Context context, String name){
+        ColoringsDbHelper dbHelper = new ColoringsDbHelper(context);
+        List<String> names = dbHelper.getAlgorithmsNames();
+        for (int i = 0; i < names.size(); i++) {
+            if (names.get(i).equals(name)){
+                return i;
+            }
+        }
+        return 0;
+    }
+
 }

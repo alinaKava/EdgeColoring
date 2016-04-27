@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.kava.android.edgecoloringmobileapp.R;
 import com.kava.android.edgecoloringmobileapp.model.Algorithm;
 import com.kava.android.edgecoloringmobileapp.model.Coloring;
 import com.kava.android.edgecoloringmobileapp.utils.FileUtil;
@@ -33,7 +34,7 @@ public class ColoringsDbHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ALGORITHM_ID = "algorithm_id";
     public static final int IS_DEFAULT = 1;
     public static final int IS_NOT_DEFAULT = 0;
-    public static final String[] ALGORITHMS_NAME = {"Alg1", "Alg2", "Alg3", "Alg4", "Alg5"};
+    public static String[] ALGORITHMS_NAME;
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Colorings.db";
@@ -55,6 +56,11 @@ public class ColoringsDbHelper extends SQLiteOpenHelper {
 
     public ColoringsDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        ALGORITHMS_NAME = new String[4];
+        ALGORITHMS_NAME[0] = context.getResources().getString(R.string.alg1);
+        ALGORITHMS_NAME[1] = context.getResources().getString(R.string.alg2);
+        ALGORITHMS_NAME[2] = context.getResources().getString(R.string.alg3);
+        ALGORITHMS_NAME[3] = context.getResources().getString(R.string.alg4);
     }
 
     public void onCreate(SQLiteDatabase db) {
