@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="auto_print"
-        android:title="Automation print"/>
     <ListPreference     android:title="Default Edge Algorithm"
         android:summary="Select the algorithm of edge detection that you would like to use as default"
         android:key="defaultAlg"

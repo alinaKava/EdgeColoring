@@ -5,9 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimaryDark"
     android:minHeight="?attr/actionBarSize"
     app:navigationContentDescription="@string/settings_nav_item"
+    app:titleTextColor="@color/list_item_title"
     app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
     app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    android:background="?attr/colorPrimary"
     app:title="@string/settings_nav_item"/>
