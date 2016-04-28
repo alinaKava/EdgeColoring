@@ -168,10 +168,27 @@ public class ImageWorkActivity extends AppCompatActivity {
         {
             Intent intent = new Intent(this, PreviewActivity.class);
             intent.putExtra("path", imagePath);
-            startActivity(intent);
+            startActivityForResult(intent, 66);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 66 && resultCode == RESULT_OK) {
+            imagePath = data.getStringExtra("imagePath");
+            int pos;
+            if ((pos = data.getIntExtra("position", -1)) == -1){
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+                algorithmName = sharedPref.getString(SettingsActivity.KEY_PREF_SYNC_CONN, "");
+            } else {
+                algorithmName = AlgorithmsHelper.getAlgorithmName(this, pos);
+            }
+            algorithm = dbHelper.getAlgorithmByName(algorithmName);
+            loadImage(imagePath);
+        }
     }
 
     @Override
