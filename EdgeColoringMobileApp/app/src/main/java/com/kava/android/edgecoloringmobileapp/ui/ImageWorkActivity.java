@@ -187,7 +187,7 @@ public class ImageWorkActivity extends AppCompatActivity {
                 algorithmName = AlgorithmsHelper.getAlgorithmName(this, pos);
             }
             algorithm = dbHelper.getAlgorithmByName(algorithmName);
-            loadImage(imagePath);
+            image = loadImage(imagePath);
         }
     }
 
